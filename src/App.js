@@ -78,8 +78,8 @@ function App() {
                 <Route path="news" element={<News />} />
                 <Route path="news/:id" element={<NewsDetail />} />
                 <Route path="contact" element={<Contact />} />
-                <Route path="gallery" element={<Gallery />} /> {/* YANGI: Gallereya sahifasi */}
-                <Route path="investment" element={<Investment />} />
+                {/* <Route path="gallery" element={<Gallery />} /> */}
+                                <Route path="investment" element={<Investment />} />
               </Route>
 
               {/* ADMIN ROUTES */}

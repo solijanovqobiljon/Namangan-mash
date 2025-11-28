@@ -60,7 +60,7 @@ const Layout = () => {
     { path: '/', label: t('Bosh sahifa', 'Главная') },
     { path: '/about', label: t('Biz haqimizda', 'О нас') },
     { path: '/products', label: t('Mahsulotlar', 'Продукция') },
-    { path: '/gallery', label: t('Gallereya', 'Галерея') }, // ← QO'SHING
+    // { path: '/gallery', label: t('Gallereya', 'Галерея') }, // ← QO'SHING
     { path: '/news', label: t('Yangiliklar', 'Новости') },
     { path: '/investment', label: t('Invistitsiya', 'Инвестиции') },
     { path: '/contact', label: t('Aloqa', 'Контакты') }
