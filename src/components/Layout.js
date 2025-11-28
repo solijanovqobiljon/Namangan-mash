@@ -62,6 +62,7 @@ const Layout = () => {
     { path: '/products', label: t('Mahsulotlar', 'Продукция') },
     { path: '/gallery', label: t('Gallereya', 'Галерея') }, // ← QO'SHING
     { path: '/news', label: t('Yangiliklar', 'Новости') },
+    { path: '/investment', label: t('Invistitsiya', 'Инвестиции') },
     { path: '/contact', label: t('Aloqa', 'Контакты') }
   ];
 
@@ -91,7 +92,7 @@ const Layout = () => {
                 <img src={Img} alt="Logo" style={{ width: "50px", height: "50px" }} />
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent uppercase
+                <h1 className="text-xl font-bold bg-gradient-to-r text-[#0105ED]  bg-clip-text   uppercase
                 max-sm:text-[18px]">
                   NamanganMash
                 </h1>
@@ -248,10 +249,10 @@ const Layout = () => {
                 max-sm:text-[18px]
                ">
                 <img src={Img} alt="Logo" style={{ width: "30px", height: "30px" }} />
-                  <p className=' text-blue-600 border-b-2 flex w-[149px] border-blue-600'>
-                    NAMANGANMASH
-                    </p>
-                </h3>
+                <p className=' text-blue-600 border-b-2 flex w-[149px] border-blue-600'>
+                  NAMANGANMASH
+                </p>
+              </h3>
               <p className="text-gray-300 text-sm
                 md:text-xs
                 sm:text-xs">

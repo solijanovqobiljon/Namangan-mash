@@ -831,7 +831,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
           <div className="text-center px-6">
           <div className='flex items-center justify-center'>
               <img src={logoImage} className='mt-[-47px] w-[86px] max-sm:w-14' alt="Logo"/>
-              <h2 className="text-5xl sm:text-[60px] font-bold text-[#0003F7] border-b-4 border-blue-600 mb-12 drop-shadow-2xl max-sm:text-[30px]">
+              <h2 className="text-5xl sm:text-[60px] font-bold text-[#0003F7] border-b-4 border-[#0105ED] mb-12 drop-shadow-2xl max-sm:text-[30px]">
                 NAMANGANMASH
               </h2>
             </div>

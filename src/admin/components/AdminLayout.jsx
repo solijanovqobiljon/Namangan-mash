@@ -101,18 +101,16 @@ const AdminLayout = ({ children }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-gray-900 border-r border-gray-800 transition-all duration-300 ease-in-out z-50 ${
-          sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'
-        } ${isMobile ? (sidebarOpen ? 'w-64' : 'w-0') : (sidebarOpen ? 'w-64' : 'w-20')}`}
+        className={`fixed top-0 left-0 h-full bg-gray-900 border-r border-gray-800 transition-all duration-300 ease-in-out z-50 ${sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'
+          } ${isMobile ? (sidebarOpen ? 'w-64' : 'w-0') : (sidebarOpen ? 'w-64' : 'w-20')}`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="p-6 border-b border-gray-800">
             <div className="flex items-center justify-between">
               <h1
-                className={`font-bold text-xl uppercase bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent transition-all duration-300 ${
-                  sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
-                }`}
+                className={`font-bold text-xl uppercase bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent transition-all duration-300 ${sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
+                  }`}
               >
                 NamanganMash
               </h1>
@@ -147,26 +145,23 @@ const AdminLayout = ({ children }) => {
                   key={item.path}
                   to={item.path}
                   onClick={closeSidebar} // Mobile da link bosilganda sidebar yopiladi
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative overflow-hidden ${
-                    isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
-                      : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative overflow-hidden ${isActive
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
+                    : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'
+                    }`}
                 >
                   <Icon size={20} className="flex-shrink-0" />
                   <span
-                    className={`transition-all duration-300 whitespace-nowrap ${
-                      sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
-                    }`}
+                    className={`transition-all duration-300 whitespace-nowrap ${sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
+                      }`}
                   >
                     {item.label}
                   </span>
                   {isActive && (
                     <ChevronRight
                       size={16}
-                      className={`ml-auto transition-all duration-300 ${
-                        sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
-                      }`}
+                      className={`ml-auto transition-all duration-300 ${sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
+                        }`}
                     />
                   )}
                 </Link>
@@ -181,9 +176,8 @@ const AdminLayout = ({ children }) => {
                 {user?.username?.[0]?.toUpperCase() || 'A'}
               </div>
               <div
-                className={`transition-all duration-300 ${
-                  sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
-                }`}
+                className={`transition-all duration-300 ${sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
+                  }`}
               >
                 <p className="text-sm font-medium">{user?.username || 'Admin'}</p>
                 <p className="text-xs text-gray-500">Administrator</p>
@@ -195,9 +189,8 @@ const AdminLayout = ({ children }) => {
             >
               <LogOut style={{ width: "32px", height: "32px" }} className="text-2xl" />
               <span
-                className={`transition-all duration-300 ${
-                  sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
-                }`}
+                className={`transition-all duration-300 ${sidebarOpen ? 'opacity-100' : 'opacity-0 w-0'
+                  }`}
               >
                 Logout
               </span>
@@ -208,11 +201,10 @@ const AdminLayout = ({ children }) => {
 
       {/* Main Content */}
       <main
-        className={`transition-all duration-300 ease-in-out ${
-          isMobile
-            ? 'ml-0'
-            : (sidebarOpen ? 'ml-64' : 'ml-20')
-        }`}
+        className={`transition-all duration-300 ease-in-out ${isMobile
+          ? 'ml-0'
+          : (sidebarOpen ? 'ml-64' : 'ml-20')
+          }`}
       >
         <div className="lg:p-8 sm:p-5 max-sm:p-2">{children}</div>
       </main>

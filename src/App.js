@@ -14,6 +14,7 @@ import ContactsManagement from './admin/pages/ContactsManagement';
 import { ProtectedRoute } from './admin/components/ProtectedRoute';
 import '@/App.css';
 import { FaChevronUp } from "react-icons/fa";
+import Invistitsiya from './admin/pages/invistitsiya';
 
 // Lazy-loaded pages
 const Home = lazy(() => import('./pages/Home'));
@@ -24,6 +25,7 @@ const News = lazy(() => import('./pages/News'));
 const NewsDetail = lazy(() => import('./pages/NewsDetail'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Gallery = lazy(() => import('./pages/Gallery')); // YANGI: Gallereya sahifasi
+const Investment = lazy(() => import('./pages/invistitsiya')); // YANGI: Gallereya sahifasi
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-50">
@@ -77,6 +79,7 @@ function App() {
                 <Route path="news/:id" element={<NewsDetail />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="gallery" element={<Gallery />} /> {/* YANGI: Gallereya sahifasi */}
+                <Route path="investment" element={<Investment />} />
               </Route>
 
               {/* ADMIN ROUTES */}
@@ -110,6 +113,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <CompanyInfoManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/invistitsiya"
+                element={
+                  <ProtectedRoute>
+                    <Invistitsiya />
                   </ProtectedRoute>
                 }
               />
