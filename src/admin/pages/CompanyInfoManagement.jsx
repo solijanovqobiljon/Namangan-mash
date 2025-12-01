@@ -325,8 +325,45 @@ const CompanyInfoManagement = () => {
                   className="bg-gray-800 border-gray-700 text-gray-100"
                 />
               </div>
+
             </CardContent>
+            
           </Card>
+          <div className='w-[100%] h-[100vh] pt-4 '>
+       
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent mt-8 md:mt-0 mb-2">
+            Kompaniya yutuqlari
+            </h1>
+            <p className="text-gray-400">Zavodingizning Muvaffaqqiyat ko'rsatkichlarini yangilang</p>
+
+
+            <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm mt-6">
+            <CardHeader>
+              <CardTitle className="text-gray-100 flex items-center gap-2">
+                <Users size={20} className="text-orange-500" />
+                Kompaniya yutuqlari
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid  lg:grid-cols-2 sm:grid-cols-2 max-sm:grid-cols-1 gap-4">
+ 
+
+              <div>
+                <Label className="text-white " >Mamlakatlar soni</Label>
+                <Input
+                  type="number"
+                  value={formData.countries || ""}
+                  onChange={(e) => handleChange('countries', e.target.value)}
+                  className="bg-gray-800 border-gray-700 text-gray-100"
+                />
+              </div>
+          
+
+            </CardContent>
+            
+          </Card>
+          </div>
+         </div>
         </form>
       </div>
     </AdminLayout>

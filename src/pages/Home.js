@@ -14,6 +14,18 @@ import Banner3D from "../pages/Banner3d"
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+const apinews = `https://tokenized.pythonanywhere.com/api/info/`
+
+
+
+
+
+
+
+
+
+
+
 // =======================
 // CounterCard - scroll bilan animatsiya qiluvchi counter
 // =======================
@@ -74,6 +86,18 @@ const Home = () => {
   const [stats, setStats] = useState({ products: 0, news: 0 });
   const [isVisible, setIsVisible] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
+  const [data, setData] = useState({})
+
+  useEffect(() => {
+    axios.get(apinews).then(response => {setData(response.data)})
+            .catch(console.error);
+  }, [])
+  // 
+      //   // setData(response.data);
+      //   console.log(data)
+      // } catch (error) {
+      //   console.error('Error loading api info:', error);
+      // }
 
   // AOS + Stats yuklash
   useEffect(() => {
@@ -175,7 +199,7 @@ const Home = () => {
                transition-all duration-500 ease-out cursor-pointer
                shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:shadow-[0_20px_50px_rgba(99,102,241,0.4)]'
               data-aos="zoom-in" data-aos-delay="200" data-aos-once="true">
-              <CounterCard className="text-white" label={t('Mahsulotlar', 'Продукты')} value={stats.products} />
+              <CounterCard className="text-white" label={t('Mahsulotlar', 'Продукты')} value={data.products_count} />
             </div>
             <div className='
                 bg-gradient-to-br from-blue-800/20
@@ -185,7 +209,7 @@ const Home = () => {
                transition-all duration-500 ease-out cursor-pointer
                shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:shadow-[0_20px_50px_rgba(99,102,241,0.4)]'
               data-aos="zoom-in" data-aos-delay="300" data-aos-once="true">
-              <CounterCard className="text-white" label={t('Xodimlar', 'Сотрудники')} value={500} />
+              <CounterCard className="text-white" label={t('Xodimlar', 'Сотрудники')} value={data.employees_count} />
             </div>
             <div className='
                 bg-gradient-to-br from-blue-800/20
@@ -195,7 +219,8 @@ const Home = () => {
                transition-all duration-500 ease-out cursor-pointer
                shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:shadow-[0_20px_50px_rgba(99,102,241,0.4)]'
               data-aos="zoom-in" data-aos-delay="400" data-aos-once="true">
-              <CounterCard className="text-white" label={t('Mamlakatlar', 'Страны')} value={30} />
+              <CounterCard className="text-white" label={t('Mamlakatlar', 'Страны')} value={data.countries_count} />
+
             </div>
             <div className='
                 bg-gradient-to-br from-blue-800/20
@@ -205,7 +230,7 @@ const Home = () => {
                transition-all duration-500 ease-out cursor-pointer
                shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:shadow-[0_20px_50px_rgba(99,102,241,0.4)]'
               data-aos="zoom-in" data-aos-delay="500" data-aos-once="true">
-              <CounterCard className="text-white" label={t('Yangiliklar', 'Новости')} value={stats.news} />
+              <CounterCard className="text-white" label={t('Yangiliklar', 'Новости')} value={data.news_count} />
             </div>
           </div>
         </div>
