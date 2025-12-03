@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import api from '../admin/API';
-import { FolderOpen, ChevronRight } from 'lucide-react';
+import { FolderOpen, ChevronRight, ArrowRight } from 'lucide-react';
 
 const HomeProducts = () => {
   const { language, t } = useLanguage();
@@ -44,6 +44,10 @@ const HomeProducts = () => {
     navigate('/products', { state: { selectedCategory: category } });
   };
 
+  const handleViewAll = () => {
+    navigate('/products');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -51,6 +55,9 @@ const HomeProducts = () => {
       </div>
     );
   }
+
+  // Faqat birinchi 4 ta kategoriyani olish
+  const displayedCategories = categories.slice(0, 4);
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-white via-blue-50 to-blue-50">
@@ -64,15 +71,15 @@ const HomeProducts = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-          {categories.length === 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+          {displayedCategories.length === 0 ? (
             <div className="col-span-full text-center py-20">
               <p className="text-2xl text-gray-500">
                 {t('Hozircha kategoriyalar mavjud emas', 'Категории пока недоступны')}
               </p>
             </div>
           ) : (
-            categories.map((cat, index) => (
+            displayedCategories.map((cat, index) => (
               <div
                 key={cat.id}
                 onClick={() => handleCategoryClick(cat)}
@@ -107,6 +114,21 @@ const HomeProducts = () => {
             ))
           )}
         </div>
+
+        {/* Barcha kategoriyalarni ko'rish tugmasi */}
+        {categories.length > 4 && (
+          <div className="text-center">
+            <button
+              onClick={handleViewAll}
+              className="group inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
+            >
+              <span className="mr-3">
+                {t('Barcha kategoriyalarni ko\'rish', 'Просмотреть все категории')}
+              </span>
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

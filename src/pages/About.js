@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Building2, Target, Eye, Users } from 'lucide-react';
 import axios from 'axios';
-import Tarix from "../components/assets/namt.webp"
+import Tarix from "../components/assets/Namt.jpg"
 import Team from "../components/assets/team.jpg"
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -68,7 +68,7 @@ const About = () => {
                 <span>{t('Bizning tariximiz', 'Наша история')}</span>
               </div>
               <h2 className="text-4xl font-bold text-gray-900">
-                {t('1995 yildan buyon', 'С 1995 года')}
+                {t('1962 yildan buyon', 'С 1962 года')}
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed">
                 {language === 'uz' ? companyInfo.history_uz : companyInfo.history_ru}

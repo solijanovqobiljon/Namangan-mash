@@ -6,6 +6,7 @@ import logoImage from "../components/assets/logo.png"
 const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
   const factoryCanvasRef = useRef(null);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const [currentLang, setCurrentLang] = useState(document.documentElement.lang || 'uz');
 
   useEffect(() => {
     const canvas = factoryCanvasRef.current;
@@ -42,11 +43,6 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    // Binolarni highlight qilish funksiyasi - O'CHIRILDI
-    const highlightBuilding = (building) => {
-      // Rang o'zgarishini o'chirish - hech narsa qilmaymiz
-    };
-
     // Kamerani binoga qaratish funksiyasi
     const focusCameraOnBuilding = (building) => {
       if (!building) return;
@@ -58,24 +54,24 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       // Binoning markaziga qaratish
       const maxDim = Math.max(size.x, size.y, size.z);
       const fov = camera.fov * (Math.PI / 180);
-      let cameraDistance = Math.max(maxDim / (2 * Math.tan(fov / 2)) * 1.5, 20); // Minimum 20 birlik masofa
+      let cameraDistance = Math.max(maxDim / (2 * Math.tan(fov / 2)) * 1.5, 20);
 
       // Kamerani binoning ustidan diagonal tomondan ko'rsatish
-      const direction = new THREE.Vector3(1, 0.6, 1).normalize(); // Balandroq burchak
+      const direction = new THREE.Vector3(1, 0.6, 1).normalize();
       const cameraPosition = new THREE.Vector3()
         .copy(center)
         .add(direction.multiplyScalar(cameraDistance));
 
       // Kamerani yer sathidan pastga tushmasligini ta'minlash
-      cameraPosition.y = Math.max(cameraPosition.y, 10); // Minimum 10 birlik balandlik
+      cameraPosition.y = Math.max(cameraPosition.y, 10);
 
       // Smooth animatsiya uchun
       const startPosition = camera.position.clone();
       const startTarget = controls.target.clone();
       const endTarget = center.clone();
-      endTarget.y += size.y * 0.3; // Binoning yuqori qismiga qaratish
+      endTarget.y += size.y * 0.3;
 
-      const duration = 1200; // 1.2 soniya
+      const duration = 1200;
       const startTime = Date.now();
 
       const animateCamera = () => {
@@ -99,7 +95,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       animateCamera();
     };
 
-    // Click event handler - FAQAT FOCUS UCHUN
+    // Click event handler
     const handleCanvasClick = (event) => {
       const rect = canvas.getBoundingClientRect();
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -110,17 +106,9 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
 
       if (intersects.length > 0) {
         const clickedBuilding = intersects[0].object;
-
-        // Binoni highlight qilish - O'CHIRILDI
-        // highlightBuilding(clickedBuilding);
         setSelectedBuilding(clickedBuilding.userData.name);
-
-        // Kamerani binoga qaratish
         focusCameraOnBuilding(clickedBuilding);
-
       } else {
-        // Hech narsa bosilmasa, highlightni olib tashlash - O'CHIRILDI
-        // highlightBuilding(null);
         setSelectedBuilding(null);
       }
     };
@@ -147,7 +135,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.95 })
     );
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = 0.5; // Yerni biroz pastroq qo'yish
+    ground.position.y = 0.5;
     ground.receiveShadow = true;
     scene.add(ground);
 
@@ -230,13 +218,10 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
     // DODGER BLUE rang (1E90FF)
     const dodgerBlue = { r: 30, g: 144, b: 255 };
 
-    // Asosiy bino materiallari - DODGER BLUE G'ISHTLI
+    // Asosiy bino materiallari
     const mainBrickMat = createBrickMaterial(dodgerBlue);
-    const leftBrickMat = createBrickMaterial(dodgerBlue); // Bir xil rang
-    const rightBrickMat = createBrickMaterial(dodgerBlue); // Bir xil rang
-
-    // KARIDOR UCHUN MATERIAL - BIR XIL RANG
-    const corridorBrickMat = createBrickMaterial(dodgerBlue); // Bir xil rang
+    const leftBrickMat = createBrickMaterial(dodgerBlue);
+    const rightBrickMat = createBrickMaterial(dodgerBlue);
 
     const windowMat = new THREE.MeshStandardMaterial({
       color: 0xffffaa,
@@ -246,7 +231,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
 
     // ESHIK MATERIALI
     const doorMat = new THREE.MeshStandardMaterial({
-      color: 0x8B4513, // Jigarrang eshik
+      color: 0x8B4513,
       metalness: 0.3,
       roughness: 0.7
     });
@@ -258,7 +243,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       mesh.position.set(...pos);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
-      mesh.userData = { name, isWall }; // Bino nomini va devor ekanligini saqlash
+      mesh.userData = { name, isWall };
       scene.add(mesh);
       buildingMeshes.push(mesh);
       return mesh;
@@ -270,139 +255,93 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
 
     // ASOSIY BINOLAR (old tomondagi)
     const main = addBuilding([ -5, 6, 0], [30, 12, 12], mainBrickMat, "Asosiy Bino");
-    const left = addBuilding([-35, 4, -5.6], [30, 8, 1], leftBrickMat, "Chap Devor", true); // DEVOR
-    const right = addBuilding([ 16.5, 4, 0 ], [13, 10, 12], rightBrickMat, "O'ng Bino");
+    const left = addBuilding([-35, 4, -5.6], [30, 8, 1], leftBrickMat, "Chap Devor", true);
+    const right = addBuilding([ 16.5, 2, 0 ], [13, 5, 12], rightBrickMat, "O'ng Bino");
 
-    // ORQA BINOLAR - "U" shakl yasash uchun
+    // ORQA BINOLAR
     const backLeft = addBuilding([ -53.5, 3.5, -13], [9, 9, 16], leftBrickMat, "Orqa Chap");
     const backRight = addBuilding([-3.9, 5, -41], [16, 12, 42], rightBrickMat, "Orqa O'ng");
     const backCenter = addBuilding([-33, 5.5, -41], [23, 11, 42], mainBrickMat, "Orqa Markaz");
 
-    // YANGI DEVOR - SIZNING DEVORINGIZ BILAN BIR HIL
-    const newWall = addBuilding([-57.8, 4, -66], [0.5, 8, 90], leftBrickMat, "Yangi Devor", true); // DEVOR
-
-    // YANGI 20-BINO - ORQA MARKAZ YONIGA
+    // YANGI DEVOR
+    const newWall = addBuilding([-57.8, 4, -66], [0.5, 8, 90], leftBrickMat, "Yangi Devor", true);
     const building20 = addBuilding([-16.5, 5, -41], [8, 12, 41.9], mainBrickMat, "20-Bino");
-
-    // YANGI 15-BINO - ORQA TOMONGA (derazasiz)
     const building15 = addBuilding([-19, 5.5, -85], [40, 11, 25], mainBrickMat, "15-Bino");
-
-    // YANGI DEVOR - newWall dan o'ng tomonga cho'zilgan
     const newWallExtension = addBuilding([23.5, 4, -111], [162.7, 8, 0.5], leftBrickMat, "Yangi Devor Uzantisi", true);
-
-    // YANGI DEVOR - O'ng bino yoniga kaltaroq devor
-    const rightWall = addBuilding([22.9, 3.5, 12], [0.5, 7, 12], leftBrickMat, "O'ng Devor", true);
-
-    // YANGI 21-BINO - O'ng binoning yonidagi devorning oldiga ko'chirildi
+    const rightWall = addBuilding([22.9, 1, 12], [0.3, 7, 12], leftBrickMat, "O'ng Devor", true);
     const building21 = addBuilding([27, 3.5, 26], [9, 9, 16], leftBrickMat, "21-Bino");
-
-    // ════════════════════════════════════════════════════
-    // YANGI KARIDOR BINOSI - 21-BINONING O'NG TOMONIDA, ORQA TOMONDA ESHIK BILAN
-    // ════════════════════════════════════════════════════
-
-    // Karidor binosi - 21-bino bilan bir tekisda (z o'qi bo'yicha)
-    const corridor = addBuilding([35, 4, -26], [6, 8, 120], corridorBrickMat, "Karidor");
-
-    // ════════════════════════════════════════════════════
-    // YANGI 14-BINOLAR - KARIDOR CHAP TARAFIDA VA 15-BINO O'NG TARAFIDA
-    // ════════════════════════════════════════════════════
     const building14Left = addBuilding([39, 4.5, -99], [39, 11, 11], mainBrickMat, "14-Bino (Karidor Chap)");
     const building14Right = addBuilding([17, 5, -87], [15, 10, 35], mainBrickMat, "14-Bino (15-O'ng)");
-
-    // ════════════════════════════════════════════════════
-    // YANGI BINOLAR - 4-RAQAMLI BINO ORQASIDA
-    // ════════════════════════════════════════════════════
     const buildingBehind4_1 = addBuilding([52, 2, -66], [13, 16, 18], mainBrickMat, "4-Orqa Bino 1");
     const buildingBehind4_2 = addBuilding([52, 2, -84.5], [13, 16, 18], mainBrickMat, "4-Orqa Bino 2");
-
-    // ════════════════════════════════════════════════════
-    // YANGI BINOLAR - 11-RAQAMLI BINO OLDIDA 4TA BINO
-    // ════════════════════════════════════════════════════
     const buildingFront11_1 = addBuilding([52, 2, -45], [13, 16, 18], mainBrickMat, "11-Old Bino 1");
     const buildingFront11_2 = addBuilding([59.9, 2, -32.2], [29, 16, 7], mainBrickMat, "11-Old Bino 2");
     const buildingFront11_3 = addBuilding([66.6, 2, -39.5], [15.7, 16, 7], mainBrickMat, "11-Old Bino 3");
     const buildingFront11_4 = addBuilding([71, 2, -48.4], [7, 16, 11], mainBrickMat, "11-Old Bino 4");
-
-    // 6-SONLI BINO - YERNI KO'TARDIK VA BALANDLIGINI OSHIRDIK
     const buildingFront11_5 = addBuilding([59.9, 4, -1], [29, 16, 38], mainBrickMat, "6-Bino");
-
     const buildingFront11_6 = addBuilding([89.9, 2, 14.3], [15, 16, 38], mainBrickMat, "11-Old Bino 4");
-
-    // ════════════════════════════════════════════════════
-    // YANGI BINOLAR - 7-RAQAMLI BINO ORQASIDA 3TA BINO
-    // ════════════════════════════════════════════════════
     const buildingBehind7_1 = addBuilding([92, 4, -30], [12, 7, 7], mainBrickMat, "7-Orqa Bino 1");
     const buildingBehind7_2 = addBuilding([86.6, 4, -40], [15.7, 7, 7], mainBrickMat, "7-Orqa Bino 2");
     const buildingBehind7_3 = addBuilding([73, 4, -70], [13.7, 7, 13.7], mainBrickMat, "7-Orqa Bino 3");
-
-    // ════════════════════════════════════════════════════
-    // YANGI BINOLAR - 9-RAQAMLI BINO YONIDA 2TA BINO
-    // ════════════════════════════════════════════════════
     const buildingNext9_1 = addBuilding([88, 4, -68], [12, 7, 10], mainBrickMat, "9-Yon Bino 1");
     const buildingNext9_2 = addBuilding([88, 4, -88], [19, 7, 12], mainBrickMat, "9-Yon Bino 2");
-
-    const newWallExtension2 = addBuilding([71.5, 2, 33.8], [67, 12, 0.5], leftBrickMat, "yuzaki devor", true);
+    const newWallExtension2 = addBuilding([68, 2, 33.8], [73.6, 12, 0.5], leftBrickMat, "yuzaki devor", true);
     const newWallExtension3 = addBuilding([105, 2, -39], [0.5, 12, 145], leftBrickMat, "O'ng devor ", true);
 
-    // KARIDORGA ESHIK QO'SHISH - ORQA TOMONGA (21-bino tomonga)
-    const addDoorToCorridor = () => {
-      const doorWidth = 1.2;
-      const doorHeight = 2.5;
-      const doorThickness = 0.1;
+  
 
-      const doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, doorThickness);
-      const doorMesh = new THREE.Mesh(doorGeometry, doorMat);
-
-      // Eshikni karidorning ORQA TOMONIGA (21-bino tomonga) joylashtirish
-      doorMesh.position.set(
-        33, // karidor markazi
-        1.5, // yer sathidan balandlik
-        34 // karidorning orqa chekkasi (21-bino tomonga)
-      );
-
-      // Eshikni 21-bino tomonga qaratish (orqa tomonga)
-      doorMesh.rotation.y = 0; // 0 gradus - orqa tomonga qaragan
-
-      doorMesh.castShadow = true;
-      doorMesh.receiveShadow = true;
-      scene.add(doorMesh);
-
-      return doorMesh;
-    };
-
-    const corridorDoor = addDoorToCorridor();
-
-    // HOVLI o'rtada bo'sh qoladi
-
-    // BINOLAR USTIGA TEXT QO'SHISH - FAQAT BINOLAR UCHUN (DEVORLAR UCHUN EMAS)
-    const createBuildingText = (textUz, textRu, position, rotation = [0, 0, 0]) => {
-      // Canvas orqali text yaratish
+    // DINAMIK TEXT YARATISH FUNKSIYASI
+    const createDynamicText = (textUz, textRu, position, rotation = [0, 0, 0]) => {
+      // Text uzunligini o'lchash
+      const getTextForCurrentLang = () => {
+        return currentLang === 'ru' ? textRu : textUz;
+      };
+      
+      const currentText = getTextForCurrentLang();
+      
+      // Canvas yaratish
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
-      canvas.width = 512;
-      canvas.height = 128;
-
+      
+      // Font settings
+      const fontSize = 42;
+      const fontFamily = 'Arial';
+      const fontWeight = 'bold';
+      context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+      
+      // Text uzunligini o'lchash
+      const textMetrics = context.measureText(currentText);
+      const textWidth = textMetrics.width;
+      
+      // Canvas o'lchamlarini text uzunligiga qarab belgilash
+      const padding = 40; // Har ikki tomondan padding
+      const canvasWidth = Math.max(300, textWidth + padding * 2); // Minimum 300px
+      const canvasHeight = 128;
+      
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+      
       // Orqa fon - gradient bilan tayoqcha effekti
-      const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+      const gradient = context.createLinearGradient(0, 0, canvasWidth, 0);
       gradient.addColorStop(0, 'rgba(0, 0, 0, 0.9)');
       gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.95)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0.9)');
 
       context.fillStyle = gradient;
-      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      // Tayoqcha chegarasi - qalinroq
+      // Tayoqcha chegarasi
       context.strokeStyle = '#ffffff';
       context.lineWidth = 3;
-      context.strokeRect(4, 4, canvas.width - 8, canvas.height - 8);
+      context.strokeRect(4, 4, canvasWidth - 8, canvasHeight - 8);
 
       // Ichki chegaralar
       context.strokeStyle = '#cccccc';
       context.lineWidth = 1;
-      context.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+      context.strokeRect(8, 8, canvasWidth - 16, canvasHeight - 16);
 
       // Text
-      context.font = 'bold 42px Arial';
+      context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
       context.fillStyle = '#ffffff';
@@ -411,10 +350,9 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       context.shadowOffsetX = 2;
       context.shadowOffsetY = 2;
 
-      // Tilga qarab text
-      const currentText = document.documentElement.lang === 'ru' ? textRu : textUz;
-      context.fillText(currentText, canvas.width / 2, canvas.height / 2);
+      context.fillText(currentText, canvasWidth / 2, canvasHeight / 2);
 
+      // Texture yaratish
       const texture = new THREE.CanvasTexture(canvas);
       const material = new THREE.MeshBasicMaterial({
         map: texture,
@@ -422,12 +360,95 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
         side: THREE.DoubleSide
       });
 
-      const geometry = new THREE.PlaneGeometry(8, 2);
+      // Geometry ni text uzunligiga qarab o'lchamlash
+      const planeWidth = (canvasWidth / 128) * 2; // Scale factor
+      const planeHeight = 2;
+      const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+      
       const textMesh = new THREE.Mesh(geometry, material);
       textMesh.position.set(...position);
       textMesh.rotation.set(...rotation);
+      
+      // Textni yangilash uchun ma'lumotlarni saqlash
+      textMesh.userData = {
+        textUz,
+        textRu,
+        originalPosition: [...position],
+        originalRotation: [...rotation],
+        updateText: function(newLang) {
+          const text = newLang === 'ru' ? this.textRu : this.textUz;
+          
+          // Yangi canvas yaratish
+          const newCanvas = document.createElement('canvas');
+          const newContext = newCanvas.getContext('2d');
+          
+          // Font settings
+          const fontSize = 42;
+          const fontFamily = 'Arial';
+          const fontWeight = 'bold';
+          newContext.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+          
+          // Text uzunligini o'lchash
+          const textMetrics = newContext.measureText(text);
+          const textWidth = textMetrics.width;
+          
+          // Yangi o'lchamlar
+          const padding = 40;
+          const canvasWidth = Math.max(300, textWidth + padding * 2);
+          const canvasHeight = 128;
+          
+          newCanvas.width = canvasWidth;
+          newCanvas.height = canvasHeight;
+          
+          // Yangi gradient fon
+          const gradient = newContext.createLinearGradient(0, 0, canvasWidth, 0);
+          gradient.addColorStop(0, 'rgba(0, 0, 0, 0.9)');
+          gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.95)');
+          gradient.addColorStop(1, 'rgba(0, 0, 0, 0.9)');
+          
+          newContext.fillStyle = gradient;
+          newContext.fillRect(0, 0, canvasWidth, canvasHeight);
+          
+          // Yangi chegaralar
+          newContext.strokeStyle = '#ffffff';
+          newContext.lineWidth = 3;
+          newContext.strokeRect(4, 4, canvasWidth - 8, canvasHeight - 8);
+          
+          newContext.strokeStyle = '#cccccc';
+          newContext.lineWidth = 1;
+          newContext.strokeRect(8, 8, canvasWidth - 16, canvasHeight - 16);
+          
+          // Yangi text
+          newContext.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+          newContext.textAlign = 'center';
+          newContext.textBaseline = 'middle';
+          newContext.fillStyle = '#ffffff';
+          newContext.shadowColor = 'rgba(0, 0, 0, 0.8)';
+          newContext.shadowBlur = 4;
+          newContext.shadowOffsetX = 2;
+          newContext.shadowOffsetY = 2;
+          
+          newContext.fillText(text, canvasWidth / 2, canvasHeight / 2);
+          
+          // Yangi texture
+          const newTexture = new THREE.CanvasTexture(newCanvas);
+          
+          // Yangi geometry o'lchamlari
+          const newPlaneWidth = (canvasWidth / 128) * 2;
+          
+          // Eski material va geometry ni dispose qilish
+          this.textMesh.material.map?.dispose();
+          this.textMesh.geometry.dispose();
+          
+          // Yangi geometry va texture
+          this.textMesh.geometry = new THREE.PlaneGeometry(newPlaneWidth, 2);
+          this.textMesh.material.map = newTexture;
+          this.textMesh.material.needsUpdate = true;
+        },
+        textMesh: textMesh // Reference uchun
+      };
 
-      // TAYOQCHA (pole) yaratish - TIK HOLATDA
+      // TAYOQCHA (pole) yaratish
       const poleGeometry = new THREE.CylinderGeometry(0.08, 0.12, 3, 8);
       const poleMaterial = new THREE.MeshStandardMaterial({
         color: 0x222222,
@@ -436,17 +457,11 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       });
 
       const pole = new THREE.Mesh(poleGeometry, poleMaterial);
-
-      // Tayoqchani text ostiga joylashtirish - TIK HOLATDA
-      pole.position.set(
-        position[0],
-        position[1] - 1.8, // Textdan pastroq, lekin tik
-        position[2]
-      );
+      pole.position.set(position[0], position[1] - 1.8, position[2]);
 
       scene.add(pole);
       scene.add(textMesh);
-      return { textMesh, pole };
+      return { textMesh, pole, userData: textMesh.userData };
     };
 
     // Text va tayoqchalarni kamera bilan aylantirish funksiyasi
@@ -477,145 +492,163 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
               textWorldPos.y - 1.8,
               textWorldPos.z
             );
-            item.pole.rotation.set(0, 0, 0); // Tik holatda saqlash
+            item.pole.rotation.set(0, 0, 0);
           }
         }
       });
     };
 
-    // Binolar ustiga text va tayoqchalar qo'shish - FAQAT BINOLAR UCHUN (DEVORLAR UCHUN EMAS)
+    // Binolar ustiga text va tayoqchalar qo'shish
     const textMeshes = [];
 
-    // Asosiy binolar textlari - CHIROYLI NOMLAR
-    textMeshes.push(createBuildingText(
-      'ASOSIY BINO', 'ГЛАВНОЕ ЗДАНИЕ',
+    // Asosiy binolar textlari
+    textMeshes.push(createDynamicText(
+      'Административно бытовой корпус', 'Ma\'muriy-maishiy korpus',
       [-4, 15, 0], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      'O\'NG BINO', 'ПРАВОЕ ЗДАНИЕ',
-      [16, 11, 0], [0, 0, 0]
+    textMeshes.push(createDynamicText(
+      'автостоянка', 'Avtoturargoh',
+      [16, 7, 0], [0, 0, 0]
     ));
 
-    // Orqa binolar textlari - CHIROYLI NOMLAR
-    textMeshes.push(createBuildingText(
-      '13-SONLI BINO', 'ЗДАНИЕ №13',
+    // Orqa binolar textlari
+    textMeshes.push(createDynamicText(
+      'Центральный склад', 'Markaziy ombor',
       [-55, 11, -13], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      'ORQA O\'NG BINO', 'ЗАДНЕЕ ПРАВОЕ ЗДАНИЕ',
+    textMeshes.push(createDynamicText(
+      'механосборочный корпус №2', 'Mexanosborka korpusi №2',
       [-3, 13.5, -40], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      'ORQA MARKAZ', 'ЗАДНИЙ ЦЕНТР',
+    textMeshes.push(createDynamicText(
+      'Механосборочный корпус №1', 'Mexanosborka korpusi №1',
       [-35, 14, -35], [0, 0, 0]
     ));
 
-    // YANGI 20-BINO UCHUN TEXT - CHIROYLI NOM
-    textMeshes.push(createBuildingText(
-      '20-SONLI BINO', 'ЗДАНИЕ №20',
+    // YANGI 20-BINO UCHUN TEXT
+    textMeshes.push(createDynamicText(
+      'промежуточный склад', 'O‘rtacha ombor',
       [-17, 13, -40], [0, 0, 0]
     ));
 
-    // YANGI 15-BINO UCHUN TEXT - CHIROYLI NOM
-    textMeshes.push(createBuildingText(
-      '15-SONLI BINO', 'ЗДАНИЕ №15',
+    // YANGI 15-BINO UCHUN TEXT
+    textMeshes.push(createDynamicText(
+      'Корпус №6', 'Korpus №6',
       [-15, 13, -85], [0, 0, 0]
     ));
 
-    // YANGI 21-BINO UCHUN TEXT - CHIROYLI NOM
-    textMeshes.push(createBuildingText(
-      '21-SONLI BINO', 'ЗДАНИЕ №21',
+    // YANGI 21-BINO UCHUN TEXT
+    textMeshes.push(createDynamicText(
+      'проходная', 'O‘tkazgich',
       [27, 11, 26], [0, 0, 0]
     ));
 
-    // YANGI KARIDOR UCHUN TEXT - Karidor ustiga
-    textMeshes.push(createBuildingText(
-      'KARIDOR', 'КОРИДОР',
-      [36, 11, 18], [0, 0, 0]
-    ));
+   
 
-    // YANGI 14-BINOLAR UCHUN TEXT - CHIROYLI NOMLAR
-    textMeshes.push(createBuildingText(
-      '4-SONLI BINO', 'ЗДАНИЕ №4',
+    // YANGI 14-BINOLAR UCHUN TEXT
+    textMeshes.push(createDynamicText(
+      'Ремонтно механический цех', 'Ta\'mirlash-mexanika sexi',
       [48, 13, -100], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '14-SONLI BINO', 'ЗДАНИЕ №14',
+    textMeshes.push(createDynamicText(
+      'Электроцех', 'Elektrotsex',
       [17, 12, -85], [0, 0, 0]
     ));
 
-    // YANGI ORQA BINOLAR UCHUN TEXT - CHIROYLI NOMLAR
-    textMeshes.push(createBuildingText(
-      '11-SONLI BINO', 'ЗДАНИЕ №11',
+    // YANGI ORQA BINOLAR UCHUN TEXT
+    textMeshes.push(createDynamicText(
+      'Цех товаров народного потребления', 'Xalq isteʼmol mollari sexi',
       [52, 13, -65], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '5-SONLI BINO', 'ЗДАНИЕ №5',
+    textMeshes.push(createDynamicText(
+      'Инструментально экспериментальный цех', 'Asbob-uskuna tajriba sexi',
       [52, 13, -45], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '12-SONLI BINO', 'ЗДАНИЕ №12',
+    textMeshes.push(createDynamicText(
+      'Столярный цех', 'Duradgorlik sexi',
       [62, 13, -32], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '7-SONLI BINO', 'ЗДАНИЕ №7',
+    textMeshes.push(createDynamicText(
+      'слесарная', 'Chilangarlik sexi',
       [70, 13, -40], [0, 0, 0]
     ));
 
-    // 6-SONLI BINO TEXTINI YANGILADIK - BALANDROQ JOYLASHTIRDIK
-    textMeshes.push(createBuildingText(
-      '6-SONLI BINO', 'ЗДАНИЕ №6',
-      [58, 17, 0], [0, 0, 0] // Y pozitsiyasini 13 dan 17 ga oshirdik
+    // 6-SONLI BINO TEXT
+    textMeshes.push(createDynamicText(
+      'Литейный цех', 'Quyma sexi',
+      [58, 17, 0], [0, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '3-SONLI BINO', 'ЗДАНИЕ №3',
+    textMeshes.push(createDynamicText(
+      'Заготовительный участок', 'Tayyorlov uchastkasi',
       [90, 13, 18], [20, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '17-SONLI BINO', 'ЗДАНИЕ №17',
+    textMeshes.push(createDynamicText(
+      'рентгеноскопия', 'Rentgenoskopiya',
       [93, 10, -30], [20, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '19-SONLI BINO', 'ЗДАНИЕ №19',
+    textMeshes.push(createDynamicText(
+      'литейный цех', 'Quyma sexi',
       [86, 10, -40], [20, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '9-SONLI BINO', 'ЗДАНИЕ №9',
+    textMeshes.push(createDynamicText(
+      'Кузнечный участок', 'Temirchilik uchastkasi',
       [73, 10, -69], [20, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '10-SONLI BINO', 'ЗДАНИЕ №10',
+    textMeshes.push(createDynamicText(
+      'компрессорная', 'Kompressorxona',
       [88, 10, -69], [20, 0, 0]
     ));
 
-    textMeshes.push(createBuildingText(
-      '8-SONLI BINO', 'ЗДАНИЕ №8',
+    textMeshes.push(createDynamicText(
+      'Котельная', 'Qozonxona',
       [88, 10, -88], [20, 0, 0]
     ));
 
-    // Derazalar - YANGI: TANLANGAN BINOLARGA MARKAZDA CHIROYLI DEREZALAR
-    const winGeo = new THREE.BoxGeometry(1.8, 1.8, 0.3);
+    // Til o'zgarganda textlarni yangilash funksiyasi
+    const updateAllTexts = () => {
+      const newLang = document.documentElement.lang || 'uz';
+      setCurrentLang(newLang);
+      
+      textMeshes.forEach(item => {
+        if (item.userData && item.userData.updateText) {
+          item.userData.updateText(newLang);
+        }
+      });
+    };
 
-    // Deraza qo'shiladigan binolar ro'yxati - ORQA O'NG, 14, 6, 10, 8 qo'shildi
+    // Til o'zgarishini kuzatish
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'lang') {
+          updateAllTexts();
+        }
+      });
+    });
+
+    // HTML elementining lang atributini kuzatish
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['lang'] 
+    });
+
+    // Derazalar
+    const winGeo = new THREE.BoxGeometry(1.8, 1.8, 0.3);
     const buildingsWithWindows = [
-      main, right, backCenter, buildingFront11_1, // Oldingi tanlanganlar
-      backRight, // Orqa O'ng bino
-      building14Right, // 14-sonli bino
-      buildingFront11_5, // 6-sonli bino (buildingFront11_5 nomi bilan)
-      buildingNext9_1, // 10-sonli bino
-      buildingNext9_2  // 8-sonli bino
+      main, right, backCenter, buildingFront11_1,
+      backRight, building14Right, buildingFront11_5,
+      buildingNext9_1, buildingNext9_2
     ];
 
     buildingsWithWindows.forEach(building => {
@@ -630,7 +663,27 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
         const rows = Math.max(2, Math.floor(h / 4));
 
         const startX = -w/2 + (w - (cols * 3.5)) / 2 + 1.75;
-        const startY = -h/2 + (h - (rows * 3)) / 2 + 0.8; // 1.5 dan 0.8 ga tushirdik - PASTROQ
+        const startY = -h/2 + (h - (rows * 3)) / 2 + 0.8;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const win = new THREE.Mesh(winGeo, windowMat);
+            win.position.set(
+              building.position.x + startX + c * 3.5,
+              building.position.y + startY + r * 3,
+              building.position.z + d / 2 + 0.2
+            );
+            scene.add(win);
+          }
+        }
+      }
+      // O'NG BINO UCHUN 1 QATOR DEREZA
+      else if (building === right) {
+        const cols = Math.max(2, Math.floor(w / 5));
+        const rows = 1;
+
+        const startX = -w/2 + (w - (cols * 3.5)) / 2 + 1.75;
+        const startY = -h/2 + (h - (rows * 3)) / 2 + 1.5;
 
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
@@ -646,9 +699,8 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       }
       // 6-SONLI BINO UCHUN KO'PROQ DEREZA
       else if (building === buildingFront11_5) {
-        // 6-sonli bino uchun ko'proq deraza
-        const cols = Math.max(4, Math.floor(w / 4)); // Ko'proq ustunlar
-        const rows = Math.max(3, Math.floor(h / 3.5)); // Ko'proq qatorlar
+        const cols = Math.max(4, Math.floor(w / 4));
+        const rows = Math.max(3, Math.floor(h / 3.5));
 
         const startX = -w/2 + (w - (cols * 3.5)) / 2 + 1.75;
         const startY = -h/2 + (h - (rows * 3)) / 2 + 1.5;
@@ -665,7 +717,6 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
           }
         }
       } else {
-        // Boshqa binolar uchun oddiy derazalar
         const cols = Math.max(2, Math.floor(w / 5));
         const rows = Math.max(2, Math.floor(h / 4));
 
@@ -688,11 +739,10 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
 
     // Qolgan binolarga deraza qo'shilmaydi
     buildingMeshes.forEach(building => {
-      if (buildingsWithWindows.includes(building)) return; // Tanlangan binolarga yuqorida qo'shildi
+      if (buildingsWithWindows.includes(building)) return;
 
-      // Deraza qo'shilmaydigan binolar ro'yxati
       const noWindowBuildings = [left, newWall, building20, building15, newWallExtension, rightWall,
-        building21, corridor, building14Left, buildingBehind4_1, buildingBehind4_2,
+        building21,   building14Left, buildingBehind4_1, buildingBehind4_2,
         buildingFront11_2, buildingFront11_3, buildingFront11_4, buildingFront11_6,
         newWallExtension2, newWallExtension3, buildingBehind7_1, buildingBehind7_2, buildingBehind7_3,
         backLeft];
@@ -700,7 +750,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
       if (noWindowBuildings.includes(building)) return;
     });
 
-    // LOGO RASMI QO'SHILDI - YANGILANDI
+    // LOGO RASMI QO'SHISH
     const createLogo = () => {
       const textureLoader = new THREE.TextureLoader();
 
@@ -713,20 +763,17 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
           side: THREE.DoubleSide
         });
 
-        // LOGO HAJMINI KICHRAYTIRDIK
-        const logoWidth = 2.5; // 4 dan 2.5 ga
-        const logoHeight = 1.8; // 3 dan 1.8 ga
-
+        const logoWidth = 2.5;
+        const logoHeight = 1.8;
         const geometry = new THREE.PlaneGeometry(logoWidth, logoHeight);
         const logoMesh = new THREE.Mesh(geometry, material);
 
-        // LOGONI CHAPROQQA VA OZGINA PASTROQQA SURDIK
-        logoMesh.position.set(-12, 10.8, 6.2); // X: -12 dan -14 ga, Y: 10.8 dan 9.5 ga
+        logoMesh.position.set(-12, 10.8, 6.2);
         logoMesh.rotation.x = -0.1;
 
         scene.add(logoMesh);
 
-        // "NAMANGANMASH" texti - YANGILANDI
+        // "NAMANGANMASH" texti
         const createTextBanner = () => {
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');
@@ -738,15 +785,12 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
           context.font = 'bold 48px Arial';
           context.textAlign = 'center';
           context.textBaseline = 'middle';
-
-          // LOGO RANGI BILAN BIR XIL RANG - DODGER BLUE (#1E90FF)
-          context.fillStyle = '#0405F1'; // 30, 144, 255 - dodgerBlue
+          context.fillStyle = '#0405F1';
           context.shadowColor = 'rgba(0, 0, 0, 0.5)';
           context.shadowBlur = 6;
           context.shadowOffsetX = 3;
           context.shadowOffsetY = 3;
 
-          // "NAMANGAN MASH" O'RNIGA "NAMANGANMASH" - BIR QATORDA
           context.fillText('NAMANGANMASH', canvas.width / 2, canvas.height / 2);
 
           const textTexture = new THREE.CanvasTexture(canvas);
@@ -756,12 +800,10 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
             side: THREE.DoubleSide
           });
 
-          // TEXT HAJMINI KICHRAYTIRDIK
-          const textGeometry = new THREE.PlaneGeometry(16, 3); // 20,4 dan 16,3 ga
+          const textGeometry = new THREE.PlaneGeometry(16, 3);
           const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-          // TEXTNI LOGO YONIGA VA OZGINA PASTROQQA SURDIK
-          textMesh.position.set(-5, 10.6, 6.2); // X: -3 dan -8 ga, Y: 10.5 dan 9.3 ga
+          textMesh.position.set(-5, 10.6, 6.2);
           textMesh.rotation.x = -0.1;
 
           scene.add(textMesh);
@@ -796,11 +838,16 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
     };
     window.addEventListener('resize', resize);
 
+    // Cleanup
     return () => {
       window.removeEventListener('resize', resize);
       canvas.removeEventListener('click', handleCanvasClick);
       cancelAnimationFrame(frame);
       renderer.dispose();
+      
+      // Observer ni to'xtatish
+      observer.disconnect();
+      
       scene.traverse(o => {
         if (o.geometry) o.geometry.dispose();
         if (o.material) {
@@ -809,7 +856,7 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
         }
       });
     };
-  }, []);
+  }, [currentLang]); // currentLang dependency qo'shildi
 
   return (
     <div className="relative min-h-[83vh] bg-gradient-to-b from-[#222] to-[#4545DA] overflow-hidden">
@@ -824,6 +871,18 @@ const Banner3D = ({ showOverlay, setShowOverlay, t }) => {
           </p>
         </div>
       )}
+
+      {/* Tilni o'zgartirish tugmasi */}
+      <button
+        onClick={() => {
+          const currentLang = document.documentElement.lang;
+          const newLang = currentLang === 'ru' ? 'uz' : 'ru';
+          document.documentElement.lang = newLang;
+        }}
+        className="absolute left-6 bottom-6 z-40 bg-black/70 backdrop-blur-md text-white px-4 py-2 rounded-lg border border-white/40 hover:bg-white/20 transition-all"
+      >
+        {currentLang === 'ru' ? 'O\'zbekcha' : 'Русский'}
+      </button>
 
       {/* Overlay */}
       {showOverlay && (
