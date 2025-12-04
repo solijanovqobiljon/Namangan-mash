@@ -514,14 +514,19 @@ const ProductsManagement = () => {
                 </Select>
               </div>
               {selectedOption === NEW_CATEGORY && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 grid-rows-2 gap-4">
+                  <div>
+                  <p className='text-sm'>Kategoriya Nomi*</p>
+                  </div>
+                  <div className="grid grid-cols-2 max-sm:grid-cols-1 max-sm:grid-rows-2 mt-[-8px] max-sm:mt-[-40px] gap-4">
                   <Input placeholder="Nomi (uz)" value={newCatUz} onChange={e => setNewCatUz(e.target.value)} />
                   <Input placeholder="Nomi (ru)" value={newCatRu} onChange={e => setNewCatRu(e.target.value)} />
+                  </div>
                 </div>
               )}
-              <div className="grid grid-cols-2 gap-4">
-                <div><Label>Nomi (uz) *</Label><Input value={titleUz} onChange={e => setTitleUz(e.target.value)} /></div>
-                <div><Label>Nomi (ru)</Label><Input value={titleRu} onChange={e => setTitleRu(e.target.value)} /></div>
+              <div className="grid grid-cols-1 gap-4">
+                <div><Label>Nomi*</Label><Input value={titleUz} onChange={e => setTitleUz(e.target.value)} /></div>
+                {/* <div><Label>Nomi (ru)</Label><Input value={titleRu} onChange={e => setTitleRu(e.target.value)} /></div> */}
               </div>
 
               <div>
@@ -551,9 +556,9 @@ const ProductsManagement = () => {
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader><DialogTitle>Katalogni Tahrirlash</DialogTitle></DialogHeader>
             <div className="space-y-5 py-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div><Label>Nomi (uz)</Label><Input value={titleUz} onChange={e => setTitleUz(e.target.value)} /></div>
-                <div><Label>Nomi (ru)</Label><Input value={titleRu} onChange={e => setTitleRu(e.target.value)} /></div>
+                {/* <div><Label>Nomi (ru)</Label><Input value={titleRu} onChange={e => setTitleRu(e.target.value)} /></div>  */}
               </div>
 
               <div>
