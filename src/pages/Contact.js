@@ -224,21 +224,21 @@ const Contact = () => {
               </button>
             </form>
           </div>
-
+   
           {/* Map */}
           <div className="bg-white p-4 rounded-3xl shadow-2xl" data-testid="contact-map">
-            <div className="w-full h-full min-h-[500px] rounded-2xl overflow-hidden">
-              <iframe
-                src={`https://www.google.com/maps?q=${companyInfo?.latitude},${companyInfo?.longitude}&z=15&output=embed`}
-                className="w-full h-full"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Factory Location"
-              ></iframe>
-            </div>
-          </div>
+          <div className="w-full h-full min-h-[500px] rounded-2xl overflow-hidden">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12045.39969911819!2d71.64000763359535!3d40.995713612868805!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb4bc2895d1995%3A0xb19b86130302db37!2sNamanganmash%20AJ!5e0!3m2!1sru!2s!4v1764929760799!5m2!1sru!2s"
+    className="w-full h-full"
+    style={{ border: 0 }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+    title="Factory Location"
+  ></iframe>
+</div>
+          </div> 
         </div>
       </div>
     </div>

@@ -338,7 +338,7 @@ const Layout = () => {
               <ul className="space-y-2 text-sm text-gray-300
                 md:text-xs
                 sm:text-xs">
-                <li>+998 71 234-56-78</li>
+                <li>+998 91 360 88 28</li>
                 <li>info@techfactory.uz</li>
                 <li>@techfactory_uz</li>
               </ul>
