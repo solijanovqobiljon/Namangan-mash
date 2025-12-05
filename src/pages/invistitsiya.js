@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import photo from "../components/assets/hamk.JPG";
+import photo from "../components/assets/hamkorlar.png";
 import { useLanguage } from '../contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
