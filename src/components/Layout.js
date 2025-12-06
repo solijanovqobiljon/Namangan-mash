@@ -348,7 +348,7 @@ const Layout = () => {
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400
             md:mt-6 md:pt-6 md:text-xs
             sm:mt-4 sm:pt-4 sm:text-xs">
-            <p>&copy; 2025 TechFactory. {t('Barcha huquqlar himoyalangan', 'Все права защищены')}.</p>
+            <p>&copy; 2025 TechFactory. {t('Created by ZERO END TECH team', 'Created by ZERO END TECH team')}.</p>
           </div>
         </div>
       </footer>
